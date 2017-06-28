@@ -11,12 +11,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/*
 
-ADD https://download.jetbrains.com/cpp/CLion-2017.1.3.tar.gz /tmp/ide.tar.gz
-
-RUN mkdir -p /opt/ide && \
-    tar zxvf /tmp/ide.tar.gz --strip-components=1 -C /opt/ide && \
-    rm /tmp/ide.tar.gz
-
 ENV PATH /opt/llvm/bin:$PATH
 
 RUN apt-get update && apt-get -y install cmake git build-essential vim python
@@ -24,6 +18,12 @@ RUN apt-get update && apt-get -y install cmake git build-essential vim python
 ADD install-clang /opt/install-clang
 
 RUN /opt/install-clang -j 4 -C /opt/llvm
+
+ADD https://download.jetbrains.com/cpp/CLion-2017.1.3.tar.gz /tmp/ide.tar.gz
+
+RUN mkdir -p /opt/ide && \
+    tar zxvf /tmp/ide.tar.gz --strip-components=1 -C /opt/ide && \
+    rm /tmp/ide.tar.gz
 
 ENV CL_JDK=/usr/lib/jvm/oracle-jdk-8
 USER developer:developer
